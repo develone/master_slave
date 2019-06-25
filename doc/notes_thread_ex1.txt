@@ -1,0 +1,16 @@
+https://www.thegeekstuff.com/2012/04/create-threads-in-linux/?utm_source=feedburner
+gcc -g -O3 thread_ex1.c -lpthread -o thread_ex1
+ 
+time ./thread_ex1 
+
+ Thread created successfully
+
+ First thread processing
+
+ Thread created successfully
+
+ Second thread processing
+
+real	0m5.007s
+user	0m0.001s
+sys	0m0.007s
