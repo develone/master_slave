@@ -55,6 +55,7 @@ struct FILEs {
 	//status 1 input_file read
 	//status 2 svd done
 	//status 3 Sx.bin written
+	//status 4 reconst file written
 	int num_bytes_rd;
 };
 
