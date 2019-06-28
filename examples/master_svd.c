@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include<unistd.h>
 
+#define FLOAT_TO_INT(x) ((x)>=0?(int)((x)+0.5):(int)((x)-0.5))
 pthread_t th_id[2];
 
  
@@ -197,7 +198,7 @@ void free_mem() {
 			for(th0.i=0;th0.i<th0.m;th0.i++) {
 				for(th0.j=0;th0.j<th0.n;th0.j++) {
 					th0.ppa[th0.i][th0.j]=(float)*th0.inbuf;
-					printf("%d %d %5.1f \n",th0.i,th0.j,th0.ppa[th0.i][th0.j]);
+					//printf("%d %d %5.1f \n",th0.i,th0.j,th0.ppa[th0.i][th0.j]);
 					th0.inbuf++;
 				}
 			}
@@ -209,6 +210,54 @@ void free_mem() {
 			if (th0.outptr == 0) printf("can not open file S.bin for writing\n");
 			th0.result = fwrite(th0.pw,sizeof(float),th0.m,th0.outptr);
 			fclose(th0.outptr);
+			printf("U row = %d col = %d \n",th0.m,th0.n);
+			//result = disp(th0.ppa,th0.m,th0.n);
+			printf("Singular Values\n");
+			//clear the S diagonal matrix
+			for(th0.i=0;th0.i<th0.m;th0.i++) { 
+				for(th0.j=0;th0.j<th0.n;th0.j++) {
+					th0.ppds[th0.i][th0.j] = 0;
+				}	
+			}	
+			//create the S diagonal matrix from w
+			th0.j=0;
+			for(th0.i=0;th0.i<th0.m;th0.i++) { 
+				th0.ppds[th0.i][th0.j] = th0.w[th0.i];
+				th0.j++;
+			}
+			
+			printf("V row = %d col = %d \n",th0.m,th0.n);
+			//th0.result = disp(th0.ppv,th0.m,th0.n);
+
+			printf("V' row = %d col = %d \n",th0.m,th0.n);
+ 
+			th0.result = trans(th0.ppv,th0.ppvt,th0.m,th0.n);
+			//result = disp(ppvt,n,m);
+			printf("Call mul u * s  \n");
+			th0.result = mul(th0.ppa,th0.ppds,th0.ppuds,th0.m,th0.n,th0.p,th0.q);
+			printf("UDS row = %d col = %d \n",th0.m,th0.n);
+			//th0.result = disp(th0.ppuds,th0.m,th0.n);
+			printf("Call mul u * ds * vt \n");
+
+			th0.result = mul(th0.ppuds,th0.ppvt,th0.ppudsvt,th0.m,th0.n,th0.m,th0.n);
+			printf("USDVT row = %d col = %d \n",th0.p,th0.q);
+			for(th0.i=0;th0.i<th0.m;th0.i++) {
+				for(th0.j=0;th0.j<th0.n;th0.j++) {
+					//th0.pps[th0.i][th0.j]=(int)th0.ppudsvt[th0.i][th0.j];
+					th0.pps[th0.i][th0.j]=FLOAT_TO_INT(th0.ppudsvt[th0.i][th0.j]);
+					//printf("%d ",pps[i][j]);
+		
+				}
+			}
+			th0.outptr = fopen(((struct FILEs*)strptr)->second_output,"w"); 
+			printf("ps converted from float to int 0x%x \n",th0.outptr);
+			
+			if (th0.outptr == 0) printf("can not open file reconst.bin for writing\n");
+			th0.result = fwrite(th0.ps,sizeof(int),th0.m*th0.n,th0.outptr);
+			fclose(th0.outptr);
+			((struct FILEs*)strptr)->status = 3;
+			printf("# of data written 0x%x \n",th0.result);
+
 			break;
 		case 1:
 			printf("\n 2nd thread processing th_id[1] 0x%x\n",th_id[1]);
@@ -291,8 +340,55 @@ void free_mem() {
 			if (th1.outptr == 0) printf("can not open file S.bin for writing\n");
 			th1.result = fwrite(th1.pw,sizeof(float),th1.m,th1.outptr);
 			fclose(th1.outptr);
-			break;
-		case 2:
+			printf("U row = %d col = %d \n",th1.m,th1.n);
+			//result = disp(th1.ppa,th1.m,th1.n);
+			printf("Singular Values\n");
+			//clear the S diagonal matrix
+			for(th1.i=0;th1.i<th1.m;th1.i++) { 
+				for(th1.j=0;th1.j<th1.n;th1.j++) {
+					th1.ppds[th1.i][th1.j] = 0;
+				}	
+			}	
+			//create the S diagonal matrix from w
+			th1.j=0;
+			for(th1.i=0;th1.i<th1.m;th1.i++) { 
+				th1.ppds[th1.i][th1.j] = th1.w[th1.i];
+				th1.j++;
+			}
+			
+			printf("V row = %d col = %d \n",th1.m,th1.n);
+			//th1.result = disp(th1.ppv,th1.m,th1.n);
+
+			printf("V' row = %d col = %d \n",th1.m,th1.n);
+ 
+			th1.result = trans(th1.ppv,th1.ppvt,th1.m,th1.n);
+			//result = disp(ppvt,n,m);
+			printf("Call mul u * s  \n");
+			th1.result = mul(th1.ppa,th1.ppds,th1.ppuds,th1.m,th1.n,th1.p,th1.q);
+			printf("UDS row = %d col = %d \n",th1.m,th1.n);
+			//th1.result = disp(th1.ppuds,th1.m,th1.n);
+			printf("Call mul u * ds * vt \n");
+
+			th1.result = mul(th1.ppuds,th1.ppvt,th1.ppudsvt,th1.m,th1.n,th1.m,th1.n);
+			printf("USDVT row = %d col = %d \n",th1.p,th1.q);
+			for(th1.i=0;th1.i<th1.m;th1.i++) {
+				for(th1.j=0;th1.j<th1.n;th1.j++) {
+					//th1.pps[th1.i][th1.j]=(int)th1.ppudsvt[th1.i][th1.j];
+					th1.pps[th1.i][th1.j]=FLOAT_TO_INT(th1.ppudsvt[th1.i][th1.j]);
+					//printf("%d ",pps[i][j]);
+		
+				}
+			}
+			th1.outptr = fopen(((struct FILEs*)strptr)->second_output,"w"); 
+			printf("ps converted from float to int 0x%x \n",th1.outptr);
+			
+			if (th1.outptr == 0) printf("can not open file reconst.bin for writing\n");
+			th1.result = fwrite(th1.ps,sizeof(int),th1.m*th1.n,th1.outptr);
+			fclose(th1.outptr);
+			printf("# of data written 0x%x \n",th1.result);
+			((struct FILEs*)strptr)->status = 3;
+			break;		
+			case 2:
  			printf("\n 3rd thread processing th_id[1] 0x%x\n",th_id[2]);
 			printf("In mysvd input_file: %s\n", ((struct FILEs*)strptr)->input_file);
 			printf("In mysvd first_output: %s\n", ((struct FILEs*)strptr)->first_output);
@@ -373,7 +469,55 @@ void free_mem() {
 			if (th2.outptr == 0) printf("can not open file S.bin for writing\n");
 			th2.result = fwrite(th2.pw,sizeof(float),th2.m,th2.outptr);
 			fclose(th2.outptr);
-			break;
+			printf("U row = %d col = %d \n",th2.m,th2.n);
+			//result = disp(th2.ppa,th2.m,th2.n);
+			printf("Singular Values\n");
+			//clear the S diagonal matrix
+			for(th2.i=0;th2.i<th2.m;th2.i++) { 
+				for(th2.j=0;th2.j<th2.n;th2.j++) {
+					th2.ppds[th2.i][th2.j] = 0;
+				}	
+			}	
+			//create the S diagonal matrix from w
+			th2.j=0;
+			for(th2.i=0;th2.i<th2.m;th2.i++) { 
+				th2.ppds[th2.i][th2.j] = th2.w[th2.i];
+				th2.j++;
+			}
+			
+			printf("V row = %d col = %d \n",th2.m,th2.n);
+			//th2.result = disp(th2.ppv,th2.m,th2.n);
+
+			printf("V' row = %d col = %d \n",th2.m,th2.n);
+ 
+			th2.result = trans(th2.ppv,th2.ppvt,th2.m,th2.n);
+			//result = disp(ppvt,n,m);
+			printf("Call mul u * s  \n");
+			th2.result = mul(th2.ppa,th2.ppds,th2.ppuds,th2.m,th2.n,th2.p,th2.q);
+			printf("UDS row = %d col = %d \n",th2.m,th2.n);
+			//th2.result = disp(th2.ppuds,th2.m,th2.n);
+			printf("Call mul u * ds * vt \n");
+
+			th2.result = mul(th2.ppuds,th2.ppvt,th2.ppudsvt,th2.m,th2.n,th2.m,th2.n);
+			printf("USDVT row = %d col = %d \n",th2.p,th2.q);
+			for(th2.i=0;th2.i<th2.m;th2.i++) {
+				for(th2.j=0;th2.j<th2.n;th2.j++) {
+					//th2.pps[th2.i][th2.j]=(int)th2.ppudsvt[th2.i][th2.j];
+					th2.pps[th2.i][th2.j]=FLOAT_TO_INT(th2.ppudsvt[th2.i][th2.j]);
+					//printf("%d ",pps[i][j]);
+		
+				}
+			}
+			th2.outptr = fopen(((struct FILEs*)strptr)->second_output,"w"); 
+			printf("ps converted from float to int 0x%x \n",th2.outptr);
+			
+			if (th2.outptr == 0) printf("can not open file reconst.bin for writing\n");
+			th2.result = fwrite(th2.ps,sizeof(int),th2.m*th2.n,th2.outptr);
+			fclose(th2.outptr);
+			((struct FILEs*)strptr)->status = 3;
+			printf("# of data written 0x%x \n",th2.result);
+
+			break;		
 		}
 
 			 
