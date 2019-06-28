@@ -73,26 +73,17 @@ struct th_var {
 	FILE *inptr,*outptr;
 
 };
+
 struct th_var th0;
 struct th_var th1;
 struct th_var th2;
+
 void *hello(void *input) {
     printf("name: %s\n", ((struct args*)input)->name);
     printf("age: %d\n", ((struct args*)input)->age);
 }
 
-void free_mem() {
-	free(th0.ppsfr);
-	free(th0.inbuffr);
-	free(th0.ppvfr);
-	free(th0.ppudsfr);
-	free(th0.ppafr);
-	free(th0.ppdsfr);
-	free(th0.ppvtfr);
-	free(th0.ppudsvtfr);
-}
-
- void *mysvd(void *strptr) {
+void *mysvd(void *strptr) {
 	pthread_t id = pthread_self();
 	int sw;
 	if(pthread_equal(id,th_id[0])!=0) {
@@ -108,6 +99,7 @@ void free_mem() {
 	}
 	if(pthread_equal(id,th_id[1])!=0) {
 		sw = 1;
+		
 		th1.m = 256;
 		th1.n = 256;
 		th1.p = 256;
@@ -118,6 +110,7 @@ void free_mem() {
 	}
 	if(pthread_equal(id,th_id[2])!=0) {
 		sw = 2;
+		
 		th2.m = 256;
 		th2.n = 256;
 		th2.p = 256;
@@ -128,9 +121,7 @@ void free_mem() {
 	}
 	switch(sw) {
 		case 0:
-			
-
-			printf("\n 1st thread processing th_id[1] 0x%x\n",th_id[0]);
+			printf("\n 1st thread processing th_id[0] 0x%x\n",th_id[0]);
 			printf("In mysvd input_file: %s\n", ((struct FILEs*)strptr)->input_file);
 			printf("In mysvd first_output: %s\n", ((struct FILEs*)strptr)->first_output);
 			printf("In mysvd second_output: %s\n", ((struct FILEs*)strptr)->second_output);
@@ -204,7 +195,7 @@ void free_mem() {
 			}
 			th0.pw=(float *)&th0.w;
 			th0.result = dsvd(th0.ppa,th0.m,th0.n,th0.pw,th0.ppv);
-			for(th0.i=0;th0.i<th0.m;th0.i++) printf("%5.8f \n",th0.w[th0.i]);
+			//for(th0.i=0;th0.i<th0.m;th0.i++) printf("%5.8f \n",th0.w[th0.i]);
 			((struct FILEs*)strptr)->status = 2;
 			th0.outptr = fopen(((struct FILEs*)strptr)->first_output,"w");
 			if (th0.outptr == 0) printf("can not open file S.bin for writing\n");
@@ -255,9 +246,18 @@ void free_mem() {
 			if (th0.outptr == 0) printf("can not open file reconst.bin for writing\n");
 			th0.result = fwrite(th0.ps,sizeof(int),th0.m*th0.n,th0.outptr);
 			fclose(th0.outptr);
-			((struct FILEs*)strptr)->status = 3;
+			((struct FILEs*)strptr)->status = 4;
 			printf("# of data written 0x%x \n",th0.result);
-
+			//Cleaning up 
+			/*free(th0.inbuffr);
+			free(th0.ppvfr);
+			free(th0.ppudsfr);
+			free(th0.ppafr);
+			free(th0.ppvtfr);
+			free(th0.ppdsfr);
+			free(th0.ppudsvtfr);
+			free(th0.ppsfr);*/
+			
 			break;
 		case 1:
 			printf("\n 2nd thread processing th_id[1] 0x%x\n",th_id[1]);
@@ -328,13 +328,13 @@ void free_mem() {
 			for(th1.i=0;th1.i<th1.m;th1.i++) {
 				for(th1.j=0;th1.j<th1.n;th1.j++) {
 					th1.ppa[th1.i][th1.j]=(float)*th1.inbuf;
-					printf("%d %d %5.1f \n",th1.i,th1.j,th1.ppa[th1.i][th1.j]);
+					//printf("%d %d %5.1f \n",th1.i,th1.j,th1.ppa[th1.i][th1.j]);
 					th1.inbuf++;
 				}
 			}
 			th1.pw=(float *)&th1.w;
 			th1.result = dsvd(th1.ppa,th1.m,th1.n,th1.pw,th1.ppv);
-			for(th1.i=0;th1.i<th1.m;th1.i++) printf("%5.8f \n",th1.w[th1.i]);
+			//for(th1.i=0;th1.i<th1.m;th1.i++) printf("%5.8f \n",th1.w[th1.i]);
 			((struct FILEs*)strptr)->status = 2;
 			th1.outptr = fopen(((struct FILEs*)strptr)->first_output,"w");
 			if (th1.outptr == 0) printf("can not open file S.bin for writing\n");
@@ -375,7 +375,7 @@ void free_mem() {
 				for(th1.j=0;th1.j<th1.n;th1.j++) {
 					//th1.pps[th1.i][th1.j]=(int)th1.ppudsvt[th1.i][th1.j];
 					th1.pps[th1.i][th1.j]=FLOAT_TO_INT(th1.ppudsvt[th1.i][th1.j]);
-					//printf("%d ",pps[i][j]);
+					//printf("%d ",th1.pps[th1.i][th1.j]);
 		
 				}
 			}
@@ -386,10 +386,20 @@ void free_mem() {
 			th1.result = fwrite(th1.ps,sizeof(int),th1.m*th1.n,th1.outptr);
 			fclose(th1.outptr);
 			printf("# of data written 0x%x \n",th1.result);
-			((struct FILEs*)strptr)->status = 3;
+			((struct FILEs*)strptr)->status = 4;
+			//Cleaning up 
+			/*free(th1.inbuffr);
+			free(th1.ppvfr);
+			free(th1.ppudsfr);
+			free(th1.ppafr);
+			free(th1.ppvtfr);
+			free(th1.ppdsfr);
+			free(th1.ppudsvtfr);
+			free(th1.ppsfr);*/
+			
 			break;		
 			case 2:
- 			printf("\n 3rd thread processing th_id[1] 0x%x\n",th_id[2]);
+			printf("\n 3rd thread processing th_id[2] 0x%x\n",th_id[2]);
 			printf("In mysvd input_file: %s\n", ((struct FILEs*)strptr)->input_file);
 			printf("In mysvd first_output: %s\n", ((struct FILEs*)strptr)->first_output);
 			printf("In mysvd second_output: %s\n", ((struct FILEs*)strptr)->second_output);
@@ -457,13 +467,13 @@ void free_mem() {
 			for(th2.i=0;th2.i<th2.m;th2.i++) {
 				for(th2.j=0;th2.j<th2.n;th2.j++) {
 					th2.ppa[th2.i][th2.j]=(float)*th2.inbuf;
-					printf("%d %d %5.1f \n",th2.i,th2.j,th2.ppa[th2.i][th2.j]);
+					//printf("%d %d %5.1f \n",th2.i,th2.j,th2.ppa[th2.i][th2.j]);
 					th2.inbuf++;
 				}
 			}
 			th2.pw=(float *)&th2.w;
 			th2.result = dsvd(th2.ppa,th2.m,th2.n,th2.pw,th2.ppv);
-			for(th2.i=0;th2.i<th2.m;th2.i++) printf("%5.8f \n",th2.w[th2.i]);
+			//for(th2.i=0;th2.i<th2.m;th2.i++) printf("%5.8f \n",th2.w[th2.i]);
 			((struct FILEs*)strptr)->status = 2;
 			th2.outptr = fopen(((struct FILEs*)strptr)->first_output,"w");
 			if (th2.outptr == 0) printf("can not open file S.bin for writing\n");
@@ -514,10 +524,20 @@ void free_mem() {
 			if (th2.outptr == 0) printf("can not open file reconst.bin for writing\n");
 			th2.result = fwrite(th2.ps,sizeof(int),th2.m*th2.n,th2.outptr);
 			fclose(th2.outptr);
-			((struct FILEs*)strptr)->status = 3;
 			printf("# of data written 0x%x \n",th2.result);
-
+			((struct FILEs*)strptr)->status = 4;
+			//Cleaning up 
+			/*free(th2.inbuffr);
+			free(th2.ppvfr);
+			free(th2.ppudsfr);
+			free(th2.ppafr);
+			free(th2.ppvtfr);
+			free(th2.ppdsfr);
+			free(th2.ppudsvtfr);
+			free(th2.ppsfr);*/
+			
 			break;		
+		
 		}
 
 			 
