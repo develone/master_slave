@@ -620,7 +620,7 @@ int main() {
 
 	pthread_join(th_id[2], NULL);
 	printf("all threads joined\n");
-	sleep (15);
+	//sleep (15);
 
 		printf("In main status %d num_bytes_rd %d \n",files1->status,files1->num_bytes_rd);
 		printf("In main status %d num_bytes_rd %d \n",files2->status,files2->num_bytes_rd);
