@@ -1,0 +1,5 @@
+Need separate files for main and thread. Done master.c & mythread.c 
+Need a master_slave header. Done
+At present the mysvd is executed 3 times and each thread id is executed 1.
+If reading or writing a file error is encounted need to not process the thread id.
+Memory is allocated for each thread id requires a by-pass if the thread id is to be called more thae once.
