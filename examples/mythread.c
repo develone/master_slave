@@ -66,22 +66,34 @@ void *mysvd(void *strptr) {
 			th0.len2 = sizeof(float *) * th0.n + sizeof(float) * th0.m * th0.n;
 			th0.len3 = sizeof(float *) * th0.p + sizeof(float) * th0.p * th0.q;
 			th0.len4 = sizeof(int *) * th0.n + sizeof(int) * th0.m * th0.n;
-			printf("len = %d th0.len2 = %d th0.len3 = %d th0.len4 = %d\n",th0.len1, th0.len2,th0.len3,th0.len4);		
-			printf("setting up ptrs with malloc\n");
-			th0.ppv = (float **)malloc(th0.len1);
-			th0.ppvfr = th0.ppv;
-			th0.ppuds = (float **)malloc(th0.len1);
-			th0.ppudsfr = th0.ppuds;
-			th0.ppa = (float **)malloc(th0.len1);
-			th0.ppafr = th0.ppa;
-			th0.ppds = (float **)malloc(th0.len1);
-			th0.ppdsfr = th0.ppds;
-			th0.ppvt = (float **)malloc(th0.len2);
-			th0.ppvtfr = th0.ppvt;
-			th0.pps = (int **)malloc(th0.len4);
-			th0.ppsfr = th0.ppsfr;
-			th0.ppudsvt = (float **)malloc(th0.len3);
-			th0.ppudsvtfr = th0.ppudsvt;
+			if(((struct FILEs*)strptr)->mem_allocated == 0) {
+				printf("len = %d th0.len2 = %d th0.len3 = %d th0.len4 = %d\n",th0.len1, th0.len2,th0.len3,th0.len4);		
+				printf("setting up ptrs with malloc\n");
+				th0.ppv = (float **)malloc(th0.len1);
+				th0.ppvfr = th0.ppv;
+				th0.ppuds = (float **)malloc(th0.len1);
+				th0.ppudsfr = th0.ppuds;
+				th0.ppa = (float **)malloc(th0.len1);
+				th0.ppafr = th0.ppa;
+				th0.ppds = (float **)malloc(th0.len1);
+				th0.ppdsfr = th0.ppds;
+				th0.ppvt = (float **)malloc(th0.len2);
+				th0.ppdsfr = th0.ppvt;
+				th0.pps = (int **)malloc(th0.len4);
+				th0.ppsfr = th0.pps;
+				th0.ppudsvt = (float **)malloc(th0.len3);
+				th0.ppudsvtfr = th0.ppudsvt;
+				((struct FILEs*)strptr)->mem_allocated = 1;
+			} 
+			else {
+				th0.ppv = th0.ppvfr;
+				th0.ppuds = th0.ppudsfr;
+				th0.ppa = th0.ppafr;
+				th0.ppds = th0.ppdsfr;
+				th0.ppds = th0.ppdsfr;
+				th0.ppudsvt = th0.ppudsvtfr;
+			}
+				
 			// pv, puds, pa, pds, pvt, and pudsvt are now pointing to the first elements of 2D arrays 
 			th0.pv = (float *)(th0.ppv + th0.m);
 			th0.puds = (float *)(th0.ppuds + th0.m);
@@ -175,14 +187,14 @@ void *mysvd(void *strptr) {
 			((struct FILEs*)strptr)->status = 4;
 			printf("# of data written 0x%x \n",th0.result);
 			//Cleaning up 
-			/*free(th0.inbuffr);
+			free(th0.inbuffr);
 			free(th0.ppvfr);
 			free(th0.ppudsfr);
 			free(th0.ppafr);
 			free(th0.ppvtfr);
 			free(th0.ppdsfr);
 			free(th0.ppudsvtfr);
-			free(th0.ppsfr);*/
+			free(th0.ppsfr);
 			
 			break;
 		case 1:
@@ -206,21 +218,34 @@ void *mysvd(void *strptr) {
 			th1.len3 = sizeof(float *) * th1.p + sizeof(float) * th1.p * th1.q;
 			th1.len4 = sizeof(int *) * th1.n + sizeof(int) * th1.m * th1.n;
 			printf("len = %d th1.len2 = %d th1.len3 = %d th1.len4 = %d\n",th1.len1, th1.len2,th1.len3,th1.len4);		
-			printf("setting up ptrs with malloc\n");
-			th1.ppv = (float **)malloc(th1.len1);
-			th1.ppvfr = th1.ppv;
-			th1.ppuds = (float **)malloc(th1.len1);
-			th1.ppudsfr = th1.ppuds;
-			th1.ppa = (float **)malloc(th1.len1);
-			th1.ppafr = th1.ppa;
-			th1.ppds = (float **)malloc(th1.len1);
-			th1.ppdsfr = th1.ppds;
-			th1.ppvt = (float **)malloc(th1.len2);
-			th1.ppvtfr = th1.ppvt;
-			th1.pps = (int **)malloc(th1.len4);
-			th1.ppsfr = th1.ppsfr;
-			th1.ppudsvt = (float **)malloc(th1.len3);
-			th1.ppudsvtfr = th1.ppudsvt;
+			if(((struct FILEs*)strptr)->mem_allocated == 0) {
+				printf("len = %d th1.len2 = %d th1.len3 = %d th1.len4 = %d\n",th1.len1, th1.len2,th1.len3,th1.len4);		
+				printf("setting up ptrs with malloc\n");
+				th1.ppv = (float **)malloc(th1.len1);
+				th1.ppvfr = th1.ppv;
+				th1.ppuds = (float **)malloc(th1.len1);
+				th1.ppudsfr = th1.ppuds;
+				th1.ppa = (float **)malloc(th1.len1);
+				th1.ppafr = th1.ppa;
+				th1.ppds = (float **)malloc(th1.len1);
+				th1.ppdsfr = th1.ppds;
+				th1.ppvt = (float **)malloc(th1.len2);
+				th1.ppdsfr = th1.ppvt;
+				th1.pps = (int **)malloc(th1.len4);
+				th1.ppsfr = th1.pps;
+				th1.ppudsvt = (float **)malloc(th1.len3);
+				th1.ppudsvtfr = th1.ppudsvt;
+				((struct FILEs*)strptr)->mem_allocated = 1;
+			} 
+			else {
+				th1.ppv = th1.ppvfr;
+				th1.ppuds = th1.ppudsfr;
+				th1.ppa = th1.ppafr;
+				th1.ppds = th1.ppdsfr;
+				th1.ppds = th1.ppdsfr;
+				th1.ppudsvt = th1.ppudsvtfr;
+			}
+
 			// pv, puds, pa, pds, pvt, and pudsvt are now pointing to the first elements of 2D arrays 
 			th1.pv = (float *)(th1.ppv + th1.m);
 			th1.puds = (float *)(th1.ppuds + th1.m);
@@ -314,14 +339,14 @@ void *mysvd(void *strptr) {
 			printf("# of data written 0x%x \n",th1.result);
 			((struct FILEs*)strptr)->status = 4;
 			//Cleaning up 
-			/*free(th1.inbuffr);
+			free(th1.inbuffr);
 			free(th1.ppvfr);
 			free(th1.ppudsfr);
 			free(th1.ppafr);
 			free(th1.ppvtfr);
 			free(th1.ppdsfr);
 			free(th1.ppudsvtfr);
-			free(th1.ppsfr);*/
+			free(th1.ppsfr);
 			
 			break;		
 			case 2:
@@ -345,21 +370,34 @@ void *mysvd(void *strptr) {
 			th2.len3 = sizeof(float *) * th2.p + sizeof(float) * th2.p * th2.q;
 			th2.len4 = sizeof(int *) * th2.n + sizeof(int) * th2.m * th2.n;
 			printf("len = %d th2.len2 = %d th2.len3 = %d th2.len4 = %d\n",th2.len1, th2.len2,th2.len3,th2.len4);		
-			printf("setting up ptrs with malloc\n");
-			th2.ppv = (float **)malloc(th2.len1);
-			th2.ppvfr = th2.ppv;
-			th2.ppuds = (float **)malloc(th2.len1);
-			th2.ppudsfr = th2.ppuds;
-			th2.ppa = (float **)malloc(th2.len1);
-			th2.ppafr = th2.ppa;
-			th2.ppds = (float **)malloc(th2.len1);
-			th2.ppdsfr = th2.ppds;
-			th2.ppvt = (float **)malloc(th2.len2);
-			th2.ppvtfr = th2.ppvt;
-			th2.pps = (int **)malloc(th2.len4);
-			th2.ppsfr = th2.ppsfr;
-			th2.ppudsvt = (float **)malloc(th2.len3);
-			th2.ppudsvtfr = th2.ppudsvt;
+						if(((struct FILEs*)strptr)->mem_allocated == 0) {
+				printf("len = %d th1.len2 = %d th1.len3 = %d th1.len4 = %d\n",th1.len1, th1.len2,th1.len3,th1.len4);		
+				printf("setting up ptrs with malloc\n");
+				th2.ppv = (float **)malloc(th2.len1);
+				th2.ppvfr = th2.ppv;
+				th2.ppuds = (float **)malloc(th2.len1);
+				th2.ppudsfr = th2.ppuds;
+				th2.ppa = (float **)malloc(th2.len1);
+				th2.ppafr = th2.ppa;
+				th2.ppds = (float **)malloc(th2.len1);
+				th2.ppdsfr = th2.ppds;
+				th2.ppvt = (float **)malloc(th2.len2);
+				th2.ppdsfr = th2.ppvt;
+				th2.pps = (int **)malloc(th2.len4);
+				th2.ppsfr = th2.pps;
+				th2.ppudsvt = (float **)malloc(th2.len3);
+				th2.ppudsvtfr = th2.ppudsvt;
+				((struct FILEs*)strptr)->mem_allocated = 1;
+			} 
+			else {
+				th2.ppv = th2.ppvfr;
+				th2.ppuds = th2.ppudsfr;
+				th2.ppa = th2.ppafr;
+				th2.ppds = th2.ppdsfr;
+				th2.ppds = th2.ppdsfr;
+				th2.ppudsvt = th2.ppudsvtfr;
+			}
+
 			// pv, puds, pa, pds, pvt, and pudsvt are now pointing to the first elements of 2D arrays 
 			th2.pv = (float *)(th2.ppv + th2.m);
 			th2.puds = (float *)(th2.ppuds + th2.m);
@@ -453,14 +491,14 @@ void *mysvd(void *strptr) {
 			printf("# of data written 0x%x \n",th2.result);
 			((struct FILEs*)strptr)->status = 4;
 			//Cleaning up 
-			/*free(th2.inbuffr);
+			free(th2.inbuffr);
 			free(th2.ppvfr);
 			free(th2.ppudsfr);
 			free(th2.ppafr);
 			free(th2.ppvtfr);
 			free(th2.ppdsfr);
 			free(th2.ppudsvtfr);
-			free(th2.ppsfr);*/
+			free(th2.ppsfr);
 			
 			break;		
 		

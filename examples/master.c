@@ -47,11 +47,16 @@ int main() {
     files1->num_bytes_rd = 0;
     files2->num_bytes_rd = 0;
     files3->num_bytes_rd = 0;
-    printf("In main %s %s %s %d\n",files1->input_file,files1->first_output,files1->second_output,files1->status);
-    printf("In main %s %s %s %d\n",files2->input_file,files2->first_output,files2->second_output,files2->status);
-    printf("In main %s %s %s %d\n",files3->input_file,files3->first_output,files3->second_output,files3->status);
-
     
+    files1->mem_allocated = 0;
+    files2->mem_allocated = 0;
+    files3->mem_allocated = 0;
+        
+    printf("In main %s %s %s %d %d\n",files1->input_file,files1->first_output,files1->second_output,files1->status,files1->mem_allocated);
+    printf("In main %s %s %s %d %d\n",files2->input_file,files2->first_output,files2->second_output,files2->status,files2->mem_allocated);
+    printf("In main %s %s %s %d %d\n",files3->input_file,files3->first_output,files3->second_output,files3->status,files3->mem_allocated);
+
+   
     struct args *Allen = (struct args *)malloc(sizeof(struct args));
     char f1[] = "files1";
     char allen[] = "Allen";
@@ -86,12 +91,12 @@ int main() {
 		printf("In main status %d num_bytes_rd %d \n",files2->status,files2->num_bytes_rd);
 		printf("In main status %d num_bytes_rd %d \n",files3->status,files3->num_bytes_rd);
 	
-    /*
+    
     free(files1);
     free(files2);
     free(files3);
-    */
-    //free(Allen);
+    
+    free(Allen);
     
     return 0;
 }

@@ -16,6 +16,8 @@ uses
  { needed by bitmap }
  { needed to use ultibo-tftp  }
  uTFTP,
+ HTTP,         {Include HTTP and WebStatus so we can see from a web browser what is happening}
+ WebStatus,
  Winsock2,
  { needed to use ultibo-tftp  }
  { needed for telnet }
@@ -41,6 +43,7 @@ var
  Handle3:THandle;
  {Handle2:THandle;}
  Window:TWindowHandle;
+ HTTPListener:THTTPListener;
 
 
  IPAddress : string;
@@ -116,13 +119,19 @@ begin
  LoggingDeviceSetDefault(LoggingDeviceFindByType(LOGGING_TYPE_CONSOLE));
  }
 
-
+ {LoggingDeviceSetTarget(LoggingDeviceFindByType(LOGGING_TYPE_FILE),'c:\ultibologging.log');
+ LoggingDeviceSetDefault(LoggingDeviceFindByType(LOGGING_TYPE_FILE));
+ MyPLoggingDevice:=LoggingDeviceGetDefault;
+ LoggingDeviceRedirectOutput(MyPLoggingDevice);}
 
 
  {Create a graphics window to display our bitmap, let's use the new CONSOLE_POSITION_FULLSCREEN option}
  {Window:=GraphicsWindowCreate(ConsoleDeviceGetDefault,CONSOLE_POSITION_BOTTOM);}
 
-
+ HTTPListener:=THTTPListener.Create;
+ HTTPListener.Active:=True;
+ WebStatusRegister(HTTPListener,'','',True);
+ 
  //test_svd();
  Handle:=ConsoleWindowCreate(ConsoleDeviceGetDefault,CONSOLE_POSITION_FULL,True);
  ConsoleWindowWriteLn(Handle, TimeToStr(Time));

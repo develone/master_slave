@@ -10,3 +10,18 @@ master.c returns an int ultibo_th_svd.c returns a void
 arm-none-eabi-gcc -E -lpthread -O3 -mabi=aapcs -marm -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard -c mythread.c -o mythread.o
 arm-none-eabi-gcc -E -lpthread -O3 -mabi=aapcs -marm -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard -c ultibo_th_svd.c -o ultibo_th_svd.o
 
+Ultibo wrote https://ultibo.org/forum/viewtopic.php?f=16&t=1057&p=7071&hilit=pthreads#p7071
+All of the pthread types and functions are defined in include\pthreads.h but you need to define _POSIX_THREADS in order to use them.
+
+Try adding -D_POSIX_THREADS to your make parameters (CFLAGS ?) or cmake settings, the same place where you are setting -D__DYNAMIC_REENT__ should work.
+Adding a WebStatus
+needed to add uses
++ HTTP,         {Include HTTP and WebStatus so we can see from a web browser what is happening}
++ WebStatus,
+in var section
++ HTTPListener:THTTPListener;
+in begin
++ HTTPListener:=THTTPListener.Create;
++ HTTPListener.Active:=True;
++ WebStatusRegister(HTTPListener,'','',True);
++ 

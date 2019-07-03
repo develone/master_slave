@@ -45,6 +45,8 @@ struct FILEs {
 	//status 3 Sx.bin written
 	//status 4 reconst file written
 	int num_bytes_rd;
+	int mem_allocated;
+	
 	
 	
 };
