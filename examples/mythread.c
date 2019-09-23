@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include<unistd.h>
 #include "master_slave.h"
+#include "pnmio.h"
 
 void *hello(void *input) {
     printf("name: %s\n", ((struct args*)input)->name);
@@ -22,6 +23,8 @@ void *mysvd(void *strptr) {
 		
 		th0.inbuf = (int *)malloc(sizeof(int)*th0.m*th0.n);
 		th0.inbuffr = th0.inbuf;
+		th0.inbufch = (char *)malloc(sizeof(char)*th0.m*th0.n);
+		th0.inbufchfr = th0.inbufch;
 	}
 	if(pthread_equal(id,th_id[1])!=0) {
 		sw = 1;
@@ -33,6 +36,8 @@ void *mysvd(void *strptr) {
 		
 		th1.inbuf = (int *)malloc(sizeof(int)*th1.m*th1.n);
 		th1.inbuffr = th1.inbuf;
+		th1.inbufch = (char *)malloc(sizeof(char)*th1.m*th1.n);
+		th1.inbufchfr = th1.inbufch;
 	}
 	if(pthread_equal(id,th_id[2])!=0) {
 		sw = 2;
@@ -44,6 +49,8 @@ void *mysvd(void *strptr) {
 		
 		th2.inbuf = (int *)malloc(sizeof(int)*th2.m*th2.n);
 		th2.inbuffr = th2.inbuf;
+		th2.inbufch = (char *)malloc(sizeof(char)*th2.m*th2.n);
+		th2.inbufchfr = th2.inbufch;
 	}
 	switch(sw) {
 		case 0:
@@ -127,10 +134,14 @@ void *mysvd(void *strptr) {
 			for(th0.i=0;th0.i<th0.m;th0.i++) {
 				for(th0.j=0;th0.j<th0.n;th0.j++) {
 					th0.ppa[th0.i][th0.j]=(float)*th0.inbuf;
+					*th0.inbufch=(char)*th0.inbuf;
 					//printf("%d %d %5.1f \n",th0.i,th0.j,th0.ppa[th0.i][th0.j]);
+					//printf("%d %d %d \n",th0.i,th0.j,*th0.inbufch);
 					th0.inbuf++;
+					th0.inbufch++;
 				}
 			}
+			pgmWriteFile(((struct FILEs*)strptr)->pgm1,th0.inbufchfr,th0.m,th0.n);
 			th0.pw=(float *)&th0.w;
 			th0.result = dsvd(th0.ppa,th0.m,th0.n,th0.pw,th0.ppv);
 			//for(th0.i=0;th0.i<th0.m;th0.i++) printf("%5.8f \n",th0.w[th0.i]);
@@ -279,10 +290,14 @@ void *mysvd(void *strptr) {
 			for(th1.i=0;th1.i<th1.m;th1.i++) {
 				for(th1.j=0;th1.j<th1.n;th1.j++) {
 					th1.ppa[th1.i][th1.j]=(float)*th1.inbuf;
+					*th1.inbufch = (char)*th1.inbuf;
 					//printf("%d %d %5.1f \n",th1.i,th1.j,th1.ppa[th1.i][th1.j]);
+					//printf("%d %d %d \n",th1.i,th1.j,*th1.inbufch);
 					th1.inbuf++;
+					th1.inbufch++;
 				}
 			}
+			pgmWriteFile(((struct FILEs*)strptr)->pgm2,th1.inbufchfr,th1.m,th1.n);
 			th1.pw=(float *)&th1.w;
 			th1.result = dsvd(th1.ppa,th1.m,th1.n,th1.pw,th1.ppv);
 			//for(th1.i=0;th1.i<th1.m;th1.i++) printf("%5.8f \n",th1.w[th1.i]);
@@ -431,10 +446,14 @@ void *mysvd(void *strptr) {
 			for(th2.i=0;th2.i<th2.m;th2.i++) {
 				for(th2.j=0;th2.j<th2.n;th2.j++) {
 					th2.ppa[th2.i][th2.j]=(float)*th2.inbuf;
+					*th2.inbufch = (char)*th2.inbuf;
 					//printf("%d %d %5.1f \n",th2.i,th2.j,th2.ppa[th2.i][th2.j]);
+					//printf("%d %d %d \n",th2.i,th2.j,*th2.inbufch);
 					th2.inbuf++;
+					th2.inbufch++;
 				}
 			}
+			pgmWriteFile(((struct FILEs*)strptr)->pgm3,th2.inbufchfr,th2.m,th2.n);
 			th2.pw=(float *)&th2.w;
 			th2.result = dsvd(th2.ppa,th2.m,th2.n,th2.pw,th2.ppv);
 			//for(th2.i=0;th2.i<th2.m;th2.i++) printf("%5.8f \n",th2.w[th2.i]);

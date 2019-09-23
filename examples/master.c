@@ -22,6 +22,10 @@ int main() {
     files2->input_file = inp2;
     files3->input_file = inp3;
 
+    files1->pgm1 = "red.pgm";
+    files2->pgm2 = "grn.pgm";
+    files3->pgm3 = "blu.pgm";
+
     inp1 = "Sred.bin";
     inp2 = "Sgrn.bin";
     inp3 = "Sblu.bin";    

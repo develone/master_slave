@@ -38,6 +38,7 @@ struct FILEs {
 	char *input_file;
 	char *first_output;
 	char *second_output;
+	char *pgm1,*pgm2,*pgm3;
 	int status;
 	//status 0 nothing done
 	//status 1 input_file read
@@ -67,7 +68,7 @@ struct th_var {
 
 	int *ps, **pps, **ppsfr;
 	int *inbuf, *inbuffr;
-	
+	char *inbufch, *inbufchfr;
 	FILE *inptr,*outptr;
 
 };
