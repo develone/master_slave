@@ -67,7 +67,7 @@ struct th_var {
 	float *pudsvt, **ppudsvt, **ppudsvtfr;
 
 	int *ps, **pps, **ppsfr;
-	int *inbuf, *inbuffr;
+	char *inbuf, *inbuffr;
 	char *inbufch, *inbufchfr;
 	FILE *inptr,*outptr;
 

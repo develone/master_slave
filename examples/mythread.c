@@ -21,7 +21,7 @@ void *mysvd(void *strptr) {
 		th0.p = 256;
 		th0.q = 256;
 		
-		th0.inbuf = (int *)malloc(sizeof(int)*th0.m*th0.n);
+		th0.inbuf = (char *)malloc(sizeof(char)*th0.m*th0.n);
 		th0.inbuffr = th0.inbuf;
 		th0.inbufch = (char *)malloc(sizeof(char)*th0.m*th0.n);
 		th0.inbufchfr = th0.inbufch;
@@ -34,7 +34,7 @@ void *mysvd(void *strptr) {
 		th1.p = 256;
 		th1.q = 256;
 		
-		th1.inbuf = (int *)malloc(sizeof(int)*th1.m*th1.n);
+		th1.inbuf = (char *)malloc(sizeof(char)*th1.m*th1.n);
 		th1.inbuffr = th1.inbuf;
 		th1.inbufch = (char *)malloc(sizeof(char)*th1.m*th1.n);
 		th1.inbufchfr = th1.inbufch;
@@ -47,7 +47,7 @@ void *mysvd(void *strptr) {
 		th2.p = 256;
 		th2.q = 256;
 		
-		th2.inbuf = (int *)malloc(sizeof(int)*th2.m*th2.n);
+		th2.inbuf = (char *)malloc(sizeof(char)*th2.m*th2.n);
 		th2.inbuffr = th2.inbuf;
 		th2.inbufch = (char *)malloc(sizeof(char)*th2.m*th2.n);
 		th2.inbufchfr = th2.inbufch;
@@ -63,12 +63,13 @@ void *mysvd(void *strptr) {
 			printf("\n");
 			th0.inptr = fopen(((struct FILEs*)strptr)->input_file,"r");
 			if (th0.inptr == 0) printf("file not found\n");
-			th0.len1 = fread(th0.inbuf,sizeof(int),th0.m*th0.n,th0.inptr);
+			//th0.len1 = fread(th0.inbuf,sizeof(int),th0.m*th0.n,th0.inptr);
+			th0.len1 = fread(th0.inbuf,sizeof(char),th0.m*th0.n,th0.inptr);
 			fclose(th0.inptr);
 			((struct FILEs*)strptr)->num_bytes_rd = th0.len1;
 			((struct FILEs*)strptr)->status = 1;
 			printf("In mysvd status input file read: %d num_bytes_rd %d\n", ((struct FILEs*)strptr)->status,((struct FILEs*)strptr)->num_bytes_rd);
-			printf("grn.bin th0.len1 = %d \n",th0.len1);
+			printf("red.pgm th0.len1 = %d \n",th0.len1);
 			th0.len1 = sizeof(float *) * th0.m + sizeof(float) * th0.n * th0.m;
 			th0.len2 = sizeof(float *) * th0.n + sizeof(float) * th0.m * th0.n;
 			th0.len3 = sizeof(float *) * th0.p + sizeof(float) * th0.p * th0.q;
@@ -141,7 +142,7 @@ void *mysvd(void *strptr) {
 					th0.inbufch++;
 				}
 			}
-			pgmWriteFile(((struct FILEs*)strptr)->pgm1,th0.inbufchfr,th0.m,th0.n);
+			//pgmWriteFile(((struct FILEs*)strptr)->pgm1,th0.inbufchfr,th0.m,th0.n);
 			th0.pw=(float *)&th0.w;
 			th0.result = dsvd(th0.ppa,th0.m,th0.n,th0.pw,th0.ppv);
 			//for(th0.i=0;th0.i<th0.m;th0.i++) printf("%5.8f \n",th0.w[th0.i]);
@@ -223,7 +224,7 @@ void *mysvd(void *strptr) {
 			((struct FILEs*)strptr)->num_bytes_rd = th1.len1;
 			((struct FILEs*)strptr)->status = 1;
 			printf("In mysvd status input file read: %d num_bytes_rd %d\n", ((struct FILEs*)strptr)->status,((struct FILEs*)strptr)->num_bytes_rd);
-			printf("grn.bin th1.len1 = %d \n",th1.len1);
+			printf("grn.pgm th1.len1 = %d \n",th1.len1);
 			th1.len1 = sizeof(float *) * th1.m + sizeof(float) * th1.n * th1.m;
 			th1.len2 = sizeof(float *) * th1.n + sizeof(float) * th1.m * th1.n;
 			th1.len3 = sizeof(float *) * th1.p + sizeof(float) * th1.p * th1.q;
@@ -297,7 +298,7 @@ void *mysvd(void *strptr) {
 					th1.inbufch++;
 				}
 			}
-			pgmWriteFile(((struct FILEs*)strptr)->pgm2,th1.inbufchfr,th1.m,th1.n);
+			//pgmWriteFile(((struct FILEs*)strptr)->pgm2,th1.inbufchfr,th1.m,th1.n);
 			th1.pw=(float *)&th1.w;
 			th1.result = dsvd(th1.ppa,th1.m,th1.n,th1.pw,th1.ppv);
 			//for(th1.i=0;th1.i<th1.m;th1.i++) printf("%5.8f \n",th1.w[th1.i]);
@@ -354,7 +355,7 @@ void *mysvd(void *strptr) {
 			printf("# of data written 0x%x \n",th1.result);
 			((struct FILEs*)strptr)->status = 4;
 			//Cleaning up 
-			free(th1.inbuffr);
+			/*free(th1.inbuffr);*/
 			free(th1.ppvfr);
 			free(th1.ppudsfr);
 			free(th1.ppafr);
@@ -374,12 +375,12 @@ void *mysvd(void *strptr) {
 			printf("\n");
 			th2.inptr = fopen(((struct FILEs*)strptr)->input_file,"r");
 			if (th2.inptr == 0) printf("file not found\n");
-			th2.len1 = fread(th2.inbuf,sizeof(int),th2.m*th2.n,th2.inptr);
+			th2.len1 = fread(th2.inbuf,sizeof(char),th2.m*th2.n,th2.inptr);
 			fclose(th2.inptr);
 			((struct FILEs*)strptr)->num_bytes_rd = th2.len1;
 			((struct FILEs*)strptr)->status = 1;
 			printf("In mysvd status input file read: %d num_bytes_rd %d\n", ((struct FILEs*)strptr)->status,((struct FILEs*)strptr)->num_bytes_rd);
-			printf("grn.bin th2.len1 = %d \n",th2.len1);
+			printf("blu.pgm th2.len1 = %d \n",th2.len1);
 			th2.len1 = sizeof(float *) * th2.m + sizeof(float) * th2.n * th2.m;
 			th2.len2 = sizeof(float *) * th2.n + sizeof(float) * th2.m * th2.n;
 			th2.len3 = sizeof(float *) * th2.p + sizeof(float) * th2.p * th2.q;
@@ -453,7 +454,7 @@ void *mysvd(void *strptr) {
 					th2.inbufch++;
 				}
 			}
-			pgmWriteFile(((struct FILEs*)strptr)->pgm3,th2.inbufchfr,th2.m,th2.n);
+			//pgmWriteFile(((struct FILEs*)strptr)->pgm3,th2.inbufchfr,th2.m,th2.n);
 			th2.pw=(float *)&th2.w;
 			th2.result = dsvd(th2.ppa,th2.m,th2.n,th2.pw,th2.ppv);
 			//for(th2.i=0;th2.i<th2.m;th2.i++) printf("%5.8f \n",th2.w[th2.i]);
