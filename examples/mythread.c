@@ -219,7 +219,7 @@ void *mysvd(void *strptr) {
 			printf("\n");
 			th1.inptr = fopen(((struct FILEs*)strptr)->input_file,"r");
 			if (th1.inptr == 0) printf("file not found\n");
-			th1.len1 = fread(th1.inbuf,sizeof(int),th1.m*th1.n,th1.inptr);
+			th1.len1 = fread(th1.inbuf,sizeof(char),th1.m*th1.n,th1.inptr);
 			fclose(th1.inptr);
 			((struct FILEs*)strptr)->num_bytes_rd = th1.len1;
 			((struct FILEs*)strptr)->status = 1;
