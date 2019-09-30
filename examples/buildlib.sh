@@ -8,7 +8,9 @@ arm-none-eabi-gcc  -O3 -mabi=aapcs -marm -march=armv7-a -mfpu=vfpv3-d16 -mfloat-
 arm-none-eabi-gcc  -O3 -mabi=aapcs -marm -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard -c trans_mat.c -o trans_mat.o
 arm-none-eabi-gcc  -O3 -mabi=aapcs -marm -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard -c mul_mat.c -o mul_mat.o
 arm-none-eabi-gcc -D_POSIX_THREADS -lpthread -O3 -mabi=aapcs -marm -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard -c mythread.c -o mythread.o
-
+arm-none-eabi-gcc  -O3 -mabi=aapcs -marm -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard -c pnmio.c -o pnmio.o
+arm-none-eabi-gcc  -O3 -mabi=aapcs -marm -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard -c error.c -o error.o
+ 
  
 echo "Compiling example ultibo_th_svd "
 arm-none-eabi-gcc -D_POSIX_THREADS -lpthread -O3 -mabi=aapcs -marm -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard -c ultibo_th_svd.c -o ultibo_th_svd.o
