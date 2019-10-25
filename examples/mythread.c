@@ -132,8 +132,8 @@ void *mysvd(void *strptr) {
 			}
 			for(th0.i = 0; th0.i < th0.m; th0.i++) th0.ppudsvt[th0.i] = (th0.pudsvt + th0.q * th0.i); 
 	
-			for(th0.i=0;th0.i<th0.m;th0.i++) {
-				for(th0.j=0;th0.j<th0.n;th0.j++) {
+			for(th0.j=0;th0.j<th0.m;th0.j++) {
+				for(th0.i=0;th0.i<th0.n;th0.i++) {
 					th0.ppa[th0.i][th0.j]=(float)*th0.inbuf;
 					*th0.inbufch=(char)*th0.inbuf;
 					//printf("%d %d %5.1f \n",th0.i,th0.j,th0.ppa[th0.i][th0.j]);
@@ -155,8 +155,8 @@ void *mysvd(void *strptr) {
 			//result = disp(th0.ppa,th0.m,th0.n);
 			printf("Singular Values\n");
 			//clear the S diagonal matrix
-			for(th0.i=0;th0.i<th0.m;th0.i++) { 
-				for(th0.j=0;th0.j<th0.n;th0.j++) {
+			for(th0.j=0;th0.j<th0.m;th0.j++) { 
+				for(th0.i=0;th0.i<th0.n;th0.i++) {
 					th0.ppds[th0.i][th0.j] = 0;
 				}	
 			}	
@@ -182,8 +182,8 @@ void *mysvd(void *strptr) {
 
 			th0.result = mul(th0.ppuds,th0.ppvt,th0.ppudsvt,th0.m,th0.n,th0.m,th0.n);
 			printf("USDVT row = %d col = %d \n",th0.p,th0.q);
-			for(th0.i=0;th0.i<th0.m;th0.i++) {
-				for(th0.j=0;th0.j<th0.n;th0.j++) {
+			for(th0.j=0;th0.j<th0.m;th0.j++) {
+				for(th0.i=0;th0.i<th0.n;th0.i++) {
 					//th0.pps[th0.i][th0.j]=(int)th0.ppudsvt[th0.i][th0.j];
 					th0.pps[th0.i][th0.j]=FLOAT_TO_INT(th0.ppudsvt[th0.i][th0.j]);
 					//printf("%d ",pps[i][j]);
@@ -288,8 +288,8 @@ void *mysvd(void *strptr) {
 			}
 			for(th1.i = 0; th1.i < th1.m; th1.i++) th1.ppudsvt[th1.i] = (th1.pudsvt + th1.q * th1.i); 
 	
-			for(th1.i=0;th1.i<th1.m;th1.i++) {
-				for(th1.j=0;th1.j<th1.n;th1.j++) {
+			for(th1.j=0;th1.j<th1.m;th1.j++) {
+				for(th1.i=0;th1.i<th1.n;th1.i++) {
 					th1.ppa[th1.i][th1.j]=(float)*th1.inbuf;
 					*th1.inbufch = (char)*th1.inbuf;
 					//printf("%d %d %5.1f \n",th1.i,th1.j,th1.ppa[th1.i][th1.j]);
@@ -311,8 +311,8 @@ void *mysvd(void *strptr) {
 			//result = disp(th1.ppa,th1.m,th1.n);
 			printf("Singular Values\n");
 			//clear the S diagonal matrix
-			for(th1.i=0;th1.i<th1.m;th1.i++) { 
-				for(th1.j=0;th1.j<th1.n;th1.j++) {
+			for(th1.j=0;th1.j<th1.m;th1.j++) { 
+				for(th1.i=0;th1.i<th1.n;th1.i++) {
 					th1.ppds[th1.i][th1.j] = 0;
 				}	
 			}	
@@ -338,8 +338,8 @@ void *mysvd(void *strptr) {
 
 			th1.result = mul(th1.ppuds,th1.ppvt,th1.ppudsvt,th1.m,th1.n,th1.m,th1.n);
 			printf("USDVT row = %d col = %d \n",th1.p,th1.q);
-			for(th1.i=0;th1.i<th1.m;th1.i++) {
-				for(th1.j=0;th1.j<th1.n;th1.j++) {
+			for(th1.j=0;th1.j<th1.m;th1.j++) {
+				for(th1.i=0;th1.i<th1.n;th1.i++) {
 					//th1.pps[th1.i][th1.j]=(int)th1.ppudsvt[th1.i][th1.j];
 					th1.pps[th1.i][th1.j]=FLOAT_TO_INT(th1.ppudsvt[th1.i][th1.j]);
 					//printf("%d ",th1.pps[th1.i][th1.j]);
@@ -444,8 +444,8 @@ void *mysvd(void *strptr) {
 			}
 			for(th2.i = 0; th2.i < th2.m; th2.i++) th2.ppudsvt[th2.i] = (th2.pudsvt + th2.q * th2.i); 
 	
-			for(th2.i=0;th2.i<th2.m;th2.i++) {
-				for(th2.j=0;th2.j<th2.n;th2.j++) {
+			for(th2.j=0;th2.j<th2.m;th2.j++) {
+				for(th2.i=0;th2.i<th2.n;th2.i++) {
 					th2.ppa[th2.i][th2.j]=(float)*th2.inbuf;
 					*th2.inbufch = (char)*th2.inbuf;
 					//printf("%d %d %5.1f \n",th2.i,th2.j,th2.ppa[th2.i][th2.j]);
@@ -467,8 +467,8 @@ void *mysvd(void *strptr) {
 			//result = disp(th2.ppa,th2.m,th2.n);
 			printf("Singular Values\n");
 			//clear the S diagonal matrix
-			for(th2.i=0;th2.i<th2.m;th2.i++) { 
-				for(th2.j=0;th2.j<th2.n;th2.j++) {
+			for(th2.j=0;th2.j<th0.m;th2.j++) {
+				for(th2.i=0;th2.i<th2.n;th2.i++) {
 					th2.ppds[th2.i][th2.j] = 0;
 				}	
 			}	
@@ -494,8 +494,8 @@ void *mysvd(void *strptr) {
 
 			th2.result = mul(th2.ppuds,th2.ppvt,th2.ppudsvt,th2.m,th2.n,th2.m,th2.n);
 			printf("USDVT row = %d col = %d \n",th2.p,th2.q);
-			for(th2.i=0;th2.i<th2.m;th2.i++) {
-				for(th2.j=0;th2.j<th2.n;th2.j++) {
+			for(th2.j=0;th2.j<th2.m;th2.j++) {
+				for(th2.i=0;th2.i<th2.n;th2.i++) {
 					//th2.pps[th2.i][th2.j]=(int)th2.ppudsvt[th2.i][th2.j];
 					th2.pps[th2.i][th2.j]=FLOAT_TO_INT(th2.ppudsvt[th2.i][th2.j]);
 					//printf("%d ",pps[i][j]);
